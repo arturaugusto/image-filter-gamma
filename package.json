@@ -4,7 +4,9 @@
   "description": "Small library to apply a gamma filter to a image",
   "main": "src/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/karma start"
+    "build": "browserify sandbox/sandbox.js > sandbox/bundle.js",
+    "test": "./node_modules/.bin/karma start",
+    "serve": "http-server sandbox"
   },
   "author": "Ricardo Canastro",
   "license": "ISC",

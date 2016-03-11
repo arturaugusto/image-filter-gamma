@@ -1,17 +1,17 @@
 module.exports = function(config) {
     config.set({
         singleRun: true,
-        
+
         frameworks: ['mocha', 'browserify'],
 
         files: [
-            './src/*.js',
-            './tests/*.js'
+            './tests/*.js',
+            './src/*.js'
         ],
 
         preprocessors: {
             './tests/*.js': ['browserify'],
-            './src/*.js': ['browserify']
+            './src/*.js': ['browserify', 'coverage']
         },
 
         reporters: ['mocha', 'coverage'],
@@ -25,13 +25,18 @@ module.exports = function(config) {
         ],
 
         coverageReporter: {
-            type: 'html', //produces a html document after code is run
-            dir: 'coverage/' //path to created html doc
+            // specify a common output directory
+            dir: 'coverage',
+            reporters: [
+                // reporters not supporting the `file` property
+                { type: 'html', subdir: 'report-html' },
+                { type: 'text-summary' }
+            ]
         },
 
         browserify: {
             debug: true,
-            transform: [ 'brfs' ]
+            transform: ['brfs']
         },
 
         // Start these browsers, currently available:
@@ -45,6 +50,6 @@ module.exports = function(config) {
         browsers: ['PhantomJS'],
 
         // see what is going on
-        logLevel: 'LOG_DEBUG',
+        logLevel: 'LOG_INFO'
     });
 };

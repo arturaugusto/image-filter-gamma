@@ -1,5 +1,5 @@
 ![build status](https://travis-ci.org/canastro/image-filter-gamma.svg?branch=master)
-
+[![npm version](https://badge.fury.io/js/image-filter-gamma.svg)](https://badge.fury.io/js/image-filter-gamma)
 
 # image-gamma
 
