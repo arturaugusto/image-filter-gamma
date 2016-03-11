@@ -1,3 +1,6 @@
+![build status](https://travis-ci.org/canastro/image-filter-gamma.svg?branch=master)
+
+
 # image-gamma
 
 Small library to apply a gamma transformation to a image.
