@@ -4,8 +4,7 @@
   "description": "Small library to apply a gamma filter to a image",
   "main": "src/index.js",
   "scripts": {
-    "build": "browserify sandbox/sandbox.js > sandbox/bundle.js",
-    "serve": "http-server sandbox"
+    "test": "./node_modules/.bin/karma start"
   },
   "author": "Ricardo Canastro",
   "license": "ISC",
@@ -28,7 +27,19 @@
     "pixel"
   ],
   "devDependencies": {
+    "brfs": "^1.4.3",
     "browserify": "^13.0.0",
-    "http-server": "^0.9.0"
+    "chai": "^3.5.0",
+    "http-server": "^0.9.0",
+    "karma": "^0.13.22",
+    "karma-browserify": "^5.0.2",
+    "karma-coverage": "^0.5.5",
+    "karma-mocha": "^0.2.2",
+    "karma-mocha-reporter": "^2.0.0",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "mocha": "^2.4.5",
+    "phantomjs-prebuilt": "^2.1.5",
+    "sinon": "^1.17.3",
+    "watchify": "^3.7.0"
   }
 }
