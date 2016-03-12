@@ -1,3 +1,5 @@
+var istanbul = require('browserify-istanbul');
+
 module.exports = function(config) {
     config.set({
         singleRun: true,
@@ -11,7 +13,7 @@ module.exports = function(config) {
 
         preprocessors: {
             './tests/*.js': ['browserify'],
-            './src/*.js': ['browserify', 'coverage']
+            './src/*.js': ['browserify']
         },
 
         reporters: ['mocha', 'coverage'],
@@ -30,13 +32,19 @@ module.exports = function(config) {
             reporters: [
                 // reporters not supporting the `file` property
                 { type: 'html', subdir: 'report-html' },
-                { type: 'text-summary' }
+                { type: 'text-summary' },
+                { type: 'lcov'}
             ]
         },
 
         browserify: {
             debug: true,
-            transform: ['brfs']
+            transform: [
+                'brfs',
+                istanbul({
+                    ignore: ['**/node_modules/**']
+                })
+            ]
         },
 
         // Start these browsers, currently available:

@@ -6,6 +6,7 @@
   "scripts": {
     "build": "browserify sandbox/sandbox.js > sandbox/bundle.js",
     "test": "./node_modules/.bin/karma start",
+    "codecov": "cat coverage/*/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js",
     "serve": "http-server sandbox"
   },
   "author": "Ricardo Canastro",
@@ -31,7 +32,9 @@
   "devDependencies": {
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
+    "browserify-istanbul": "^1.0.0",
     "chai": "^3.5.0",
+    "codecov.io": "^0.1.6",
     "http-server": "^0.9.0",
     "karma": "^0.13.22",
     "karma-browserify": "^5.0.2",

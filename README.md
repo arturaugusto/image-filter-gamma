@@ -16,14 +16,12 @@ It applies a gamma transformation to a base64 image. If you want a more complete
 
 The default operation of this library is to consume imageData and return transformed imageData, but to facilitate a bit you can pass `asDataURL` as true to return a dataURL that you can inject into a image tag.
 
-JS file:
 ```js
 var imageFilterGamma = require('image-gamma');
 
 var result = imageFilterGamma({
     data: IMAGE_DATA,
-    color: '#008080',
-    level: 50,
+    adjustment: 50,
     asDataURL: true //if you want data to data transformation you don't need to include this
 });
 ```
