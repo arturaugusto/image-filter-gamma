@@ -2,8 +2,6 @@ var utils = require('./utils');
 
 /**
  * @name transform
- * @param {object} canvas
- * @param {object} context
  * @param {object} imageData
  * @param {number} adjustment - sane values are from 0 to 5
  */
