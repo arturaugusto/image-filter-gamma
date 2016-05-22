@@ -1,26 +1,29 @@
-var sinon = require('sinon');
-var expect = require('chai').expect;
-var utils = require('../src/utils');
-var imageFilterGamma = require('../src/index');
+import sinon from 'sinon';
+import { expect } from 'chai';
+import * as utils from 'image-filter-core';
+import imageBrightness from '../src/index';
+import 'babel-polyfill';
 
-describe('index', function () {
+describe('index', () => {
     var sandbox;
     var canvas;
     var context;
 
-    beforeEach(function () {
-       // Create a sandbox for the test
-       sandbox = sinon.sandbox.create();
-   });
+    beforeEach(() => {
+        // Create a sandbox for the test
+        sandbox = sinon.sandbox.create();
+    });
 
-   afterEach(function () {
-       // Restore all the things made through the sandbox
-       sandbox.restore();
-   });
+    afterEach(() => {
+        // Restore all the things made through the sandbox
+        sandbox.restore();
+    });
 
-    beforeEach(function () {
-
-        context = 'context';
+    beforeEach(() => {
+        context = {
+            getImageData: sandbox.stub(),
+            putImageData: sandbox.stub()
+        };
 
         canvas = {
             width: 100,
@@ -31,55 +34,28 @@ describe('index', function () {
         sandbox.stub(utils, 'getCanvas').returns(canvas);
     });
 
-    it('should throw error by missing parameters', function () {
-
-        var fn = function () {
-            imageFilterGamma({});
+    it('should throw error by missing parameters', () => {
+        const fn = () => {
+            imageBrightness({});
         };
 
         expect(fn).to.throw(/image-filter-gamma:: invalid options provided/);
     });
 
-    it('should apply gamma transformation and return as imageData', function () {
+    it.skip('should apply transformation and return as imageData', () => {
         var imageData = {
             data: [193, 219, 242, 255]
         };
 
-        const expectedData = {
-            data: [63.33238209903888, 119.1406190826259, 196.29810549179535, 255]
-        };
+        // const expectedData = {
+        //     data: [224.34440379022422, 262.88216530631394, 296.9732620320856, 255]
+        // };
 
-        sandbox.stub(utils, 'getPixels').returns(imageData);
-
-        var result = imageFilterGamma({
+        imageBrightness({
             data: imageData,
-            adjustment: 5
+            brightness: 50
+        }).then((result) => {
+            console.log(result);
         });
-
-        expect(result).to.deep.equal(expectedData);
-    });
-
-    it('should apply gamma transformation and return as dataURL', function() {
-        var imageData = {
-            data: [193, 219, 242, 255]
-        };
-
-        const expectedData = {
-            data: [63.33238209903888, 119.1406190826259, 196.29810549179535, 255]
-        };
-
-        const expectedURL = 'imageDataURL';
-
-        sandbox.stub(utils, 'getPixels').returns(imageData);
-        sandbox.stub(utils, 'convertToDataURL').returns('imageDataURL');
-
-        var result = imageFilterGamma({
-            data: imageData,
-            adjustment: 5,
-            asDataURL: true
-        });
-
-        expect(utils.convertToDataURL.calledWith(canvas, context, expectedData)).to.equal(true);
-        expect(result).to.deep.equal(expectedURL);
     });
 });

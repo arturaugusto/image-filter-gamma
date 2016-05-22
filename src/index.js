@@ -1,49 +1,41 @@
-var utils = require('./utils');
+import worker from './worker';
+import { apply, getCanvas } from 'image-filter-core';
 
 /**
- * @name transform
- * @param {object} imageData
- * @param {number} adjustment - sane values are from 0 to 5
- */
-function transform(imageData, adjustment) {
-
-    var data = imageData.data;
-    for (var i = 0; i < data.length; i+= 4) {
-        data[i] = Math.pow(data[i] / 255, adjustment) * 255;
-        data[i + 1] = Math.pow(data[i + 1] / 255, adjustment) * 255;
-        data[i + 2] = Math.pow(data[i + 2] / 255, adjustment) * 255;
-    };
-
-    return imageData;
-}
-
-/**
- * @name gamma
+ * @name contrastImage
  * @param {object} options
  * @param {string} options.data - data of a image extracted from a canvas
- * @param {string} options.adjustment
+ * @param {string} options.contrast - contrast value to apply
+ * @param {string} options.nWorkers - number of workers
  * @param {bool} options.asDataURL
+ * @returns {promise}
  */
-module.exports = function gamma(options) {
-    var factor;
-    var result;
-    var canvas;
-    var context;
-
+export default function contrastImage(options) {
     if (!options.data || !options.adjustment) {
         throw new Error('image-filter-gamma:: invalid options provided');
     }
 
-    canvas = utils.getCanvas(options.data.width, options.data.height);
-    context = canvas.getContext('2d');
+    const nWorkers = options.nWorkers || 4;
+    const params = {
+        adjustment: options.adjustment
+    };
+    const canvas = getCanvas(options.data.width, options.data.height);
+    const context = canvas.getContext('2d');
 
-    options.data = utils.getPixels(canvas, context, options.data);
+    // Drawing the source image into the target canvas
+    context.putImageData(options.data, 0, 0);
 
-    result = transform(options.data, options.adjustment);
+    const len = canvas.width * canvas.height * 4;
+    const segmentLength = len / nWorkers; // This is the length of array sent to the worker
+    const blockSize = canvas.height / nWorkers; // Height of the picture chunck for every worker
 
-    if (options.asDataURL) {
-        return utils.convertToDataURL(canvas, context, result);
-    }
-
-    return result;
+    return apply(
+        worker,
+        nWorkers,
+        canvas,
+        context,
+        params,
+        blockSize,
+        segmentLength
+    );
 }
