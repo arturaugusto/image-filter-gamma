@@ -48,13 +48,13 @@ element.setAttribute('src', options.url);
 ### How can I use the output of this?
 
 ```js
-var result = imageFilterGamma({
+imageFilterGamma({
     data: IMAGE_DATA
+}).then(function(result) {
+    var image = document.createElement('img');
+    image.setAttribute('src', result);
+
+    var target = document.getElementById('#dummy-target');
+    target.appendChild(image);
 });
-
-var image = document.createElement('img');
-image.setAttribute('src', result);
-
-var target = document.getElementById('#dummy-target');
-target.appendChild(image);
 ```
