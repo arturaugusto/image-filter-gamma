@@ -31,8 +31,9 @@ This library consumes ImageData and outputs ImageData in a Promise. You can use 
 JS file:
 ```js
 var imageGamma = require('image-gamma');
+var nWorkers = 4;
 
-imageGamma(IMAGE_DATA, { adjustment: 30 });
+imageGamma(IMAGE_DATA, { adjustment: 30 }, nWorkers);
 ```
 
 ## Frequent questions:
@@ -58,7 +59,9 @@ element.setAttribute('src', options.url);
 
 ```js
 var imageFilterCore = require('image-filter-core');
-imageGamma(IMAGE_DATA, { adjustment: 30 })
+var nWorkers = 4;
+
+imageGamma(IMAGE_DATA, { adjustment: 30 }, nWorkers)
     .then(function (result) {
         // result === ImageData object
         var image = document.createElement('img');
